@@ -9,5 +9,6 @@ import se.okwa.temperaturedb.model.WeatherReading;
 
 @Repository
 public interface WeatherReadingRepository extends JpaRepository<WeatherReading, Long> {
-//	List<WeatherReadings> findByReadingId(Long weatherReadingId);
+//	List<WeatherReading> findByReadingId(Long weatherReadingId);
+	List<WeatherReading> findAllByCity(String city);
 }

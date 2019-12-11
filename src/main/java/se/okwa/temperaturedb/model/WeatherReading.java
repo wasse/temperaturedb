@@ -21,6 +21,8 @@ public class WeatherReading extends AuditModel {
 
     @Column(columnDefinition = "text")
     private String city;
+    
+    public WeatherReading() {}   
 
 	public Double getTemperature() {
 		return temperature;
