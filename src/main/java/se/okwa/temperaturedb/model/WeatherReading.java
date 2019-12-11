@@ -42,6 +42,11 @@ public class WeatherReading extends AuditModel {
 		return id;
 	}
 
-    	
+	public WeatherReading(Double temperature, String city) {
+		this.temperature = temperature;
+		this.city = city;
+	}
+
+    
     
 }
