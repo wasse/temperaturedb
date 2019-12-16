@@ -14,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -82,6 +83,18 @@ public class ApiController {
 		return resp;
 	}
 	
+	@Scheduled(fixedRate = 1200000)
+	public void getWeatherScheduled() {
+		logger.info("Scheduled task performed");
+		
+		Mono<Weather> resp = this.service.getWeather("Sweden", "Gothenburg");
+		
+		logger.info(getValue(resp).getCity() + " AT " + getValue(resp).getTemperature());
+		
+		WeatherReading reading = new WeatherReading(getValue(resp).getTemperature(), getValue(resp).getCity(), getValue(resp).getDate());
+		readingRepository.save(reading);
+		
+	}
 	
 	Weather getValue(Mono<Weather> mono) {
 	    return mono.block();
