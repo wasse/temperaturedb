@@ -1,5 +1,8 @@
 package se.okwa.temperaturedb.model;
 
+import java.sql.Timestamp;
+import java.util.Date;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -8,6 +11,7 @@ import javax.validation.constraints.Size;
 @Table(name = "weather_reading")
 public class WeatherReading extends AuditModel {
     @Id
+//    @GeneratedValue(strategy=GenerationType.SEQUENCE)
     @GeneratedValue(generator = "id_generator")
     @SequenceGenerator(
             name = "id_generator",
@@ -15,6 +19,9 @@ public class WeatherReading extends AuditModel {
             initialValue = 1
     )
     private Long id;
+    
+    @Column
+    private Timestamp date;
 
     @Column
     private Double temperature;
@@ -23,6 +30,15 @@ public class WeatherReading extends AuditModel {
     private String city;
     
     public WeatherReading() {}   
+    
+    public WeatherReading(Double temperature, String city) {
+    	this.temperature = temperature;
+    	this.city = city;
+    }
+    public WeatherReading(Double temperature, String city, Timestamp date) {
+    	this(temperature, city);
+    	this.date = date;
+    }
 
 	public Double getTemperature() {
 		return temperature;
@@ -44,11 +60,12 @@ public class WeatherReading extends AuditModel {
 		return id;
 	}
 
-	public WeatherReading(Double temperature, String city) {
-		this.temperature = temperature;
-		this.city = city;
+	public Timestamp getDate() {
+		return date;
 	}
 
-    
-    
+	public void setDate(Timestamp date) {
+		this.date = date;
+	}
+
 }

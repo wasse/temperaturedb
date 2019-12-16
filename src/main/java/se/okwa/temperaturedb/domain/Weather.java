@@ -1,9 +1,9 @@
 package se.okwa.temperaturedb.domain;
 
+import java.sql.Timestamp;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -22,7 +22,8 @@ public class Weather {
 	private double temperature;
 	@JsonProperty("weather ID")
 	private Integer weatherId;
-	private String timestamp;
+	private String timestampString;
+	private Timestamp fetchedDate;
 	
 //	public Weather(String country, String city, Weather weather) {
 //		this.country = country;
@@ -55,13 +56,19 @@ public class Weather {
 	public void setWeatherId(Integer weatherId) {
 		this.weatherId = weatherId;
 	}
-
 	public String getTimestamp() {
-		return timestamp;
+		return timestampString;
 	}
 	public void setTimestamp(String timestamp) {
-		this.timestamp = timestamp;
+		this.timestampString = timestamp;
 	}
+	public Timestamp getDate() {
+		return fetchedDate;
+	}
+	public void setDate(Timestamp date) {
+		this.fetchedDate = date;
+	}
+	
 	public double getTemperatureInCelsius(double temperature) {
 		double celTemp = temperature - 273.15;
 		
@@ -89,8 +96,10 @@ public class Weather {
 	public void setTheTimestamp(long dt) {
 		long millis = dt * 1000;
 		Date date = new Date(millis);
+		Timestamp timestampSQL = new Timestamp(millis);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd, HH:mm:ss");
 		setTimestamp(dateFormat.format(date));
+		setDate(timestampSQL);
 	}
 
 }
