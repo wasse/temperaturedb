@@ -1,6 +1,9 @@
 package se.okwa.temperaturedb.controller;
 
 
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -72,7 +75,7 @@ public class ApiController {
 		
 		logger.info(getValue(resp).getCity() + " DERP " + getValue(resp).getTemperature());
 		
-		WeatherReading reading = new WeatherReading(getValue(resp).getTemperature(), getValue(resp).getCity());
+		WeatherReading reading = new WeatherReading(getValue(resp).getTemperature(), getValue(resp).getCity(), getValue(resp).getDate());
 		readingRepository.save(reading);
 		
 //		return this.service.getWeather(country, city);
@@ -96,6 +99,22 @@ public class ApiController {
 	public List<WeatherReading> getAllByCity(@RequestParam("city") String city) {
 		logger.info("Fetching all data from {}", city);
 		return readingRepository.findAllByCity(city);
+	}
+	
+	@GetMapping("/compare-yesterday/")
+	@Transactional
+	public WeatherReading getComparison(@RequestParam("city") String city) {
+		Mono<Weather> resp = this.service.getWeatherByCity(city);
+		WeatherReading reading = new WeatherReading(getValue(resp).getTemperature(), getValue(resp).getCity(), getValue(resp).getDate());
+//		readingRepository.save(reading);
+		
+		Timestamp today = reading.getDate();
+		return readingRepository.findByDate(today, city);
+	}
+	
+	@GetMapping("/now-and-week-ago/")
+	public WeatherReading getComparisonNow() {
+		return readingRepository.findNow();
 	}
 	
 }
