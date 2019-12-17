@@ -2,7 +2,6 @@ package se.okwa.temperaturedb.domain;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -23,12 +22,6 @@ public class WeatherService implements WeatherServiceInterface {
 	public WeatherService (TemperaturedbApplicationProperties properties) {
 		this.API_KEY = properties.getApi().getApiKey();
 		
-//		this.webCli = WebClient.builder().baseUrl("http://api.openweathermap.org/data/2.5")
-////				.defaultCookie("cookiesKey", "cookieValue")
-//				.defaultHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE)
-//				.defaultHeader(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE)
-////				.defaultUriVariables(Collections.singletonMap("url", "http://api.openweathermap.org"))
-//				.build();
 		this.webCli = WebClient.create("http://api.openweathermap.org/data/2.5");
 	}
 	

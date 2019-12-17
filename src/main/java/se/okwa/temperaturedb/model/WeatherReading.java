@@ -1,11 +1,8 @@
 package se.okwa.temperaturedb.model;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "weather_reading")
