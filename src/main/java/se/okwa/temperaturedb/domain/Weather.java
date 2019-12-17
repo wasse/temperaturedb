@@ -25,12 +25,6 @@ public class Weather {
 	private String timestampString;
 	private Timestamp fetchedDate;
 	
-//	public Weather(String country, String city, Weather weather) {
-//		this.country = country;
-//		this.city = city;
-//		this.temperature = getTemperatureInCelsius(weather.getTemperature());
-////		this.details
-//	}
 	
 	public String getCountry() {
 		return country;
