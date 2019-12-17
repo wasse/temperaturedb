@@ -100,6 +100,13 @@ public class ApiController {
 	    return mono.block();
 	}
 	
+	@Scheduled(fixedRate = 1200000)
+	public void getWeatherScheduledOfOsaka() {
+		Mono<Weather> resp = this.service.getWeather("Japan", "Osaka");
+		logger.info(getValue(resp).getCity() + " at " + getValue(resp).getTemperature());
+		WeatherReading reading = new WeatherReading(getValue(resp).getTemperature(), getValue(resp).getCity(), getValue(resp).getDate());
+		readingRepository.save(reading);
+	}
 
 	@GetMapping("/at-moment/")
 	public Mono<Weather> getWeatherByCity(@RequestParam("city") String city) {
