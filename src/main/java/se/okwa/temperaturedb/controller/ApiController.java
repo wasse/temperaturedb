@@ -46,8 +46,8 @@ public class ApiController {
 		
 		logger.info(getValue(resp).getCity() + " AT " + getValue(resp).getTemperature());
 		
-		WeatherReading reading = new WeatherReading(getValue(resp).getTemperature(), getValue(resp).getCity(), getValue(resp).getDate());
-		readingRepository.save(reading);
+//		WeatherReading reading = new WeatherReading(getValue(resp).getTemperature(), getValue(resp).getCity(), getValue(resp).getDate());
+//		readingRepository.save(reading);
 		
 		return resp;
 	}
