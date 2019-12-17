@@ -71,15 +71,14 @@ public class ApiController {
 	@GetMapping("/now/")
 	public Mono<Weather> getWeather(@RequestParam("country") String country, @RequestParam("city") String city) {
 		logger.info("Country and city entered.");
-//		readingRepository.save(this.service.getWeather(country, city));
+		
 		Mono<Weather> resp = this.service.getWeather(country, city);
 		
-		logger.info(getValue(resp).getCity() + " DERP " + getValue(resp).getTemperature());
+		logger.info(getValue(resp).getCity() + " AT " + getValue(resp).getTemperature());
 		
 		WeatherReading reading = new WeatherReading(getValue(resp).getTemperature(), getValue(resp).getCity(), getValue(resp).getDate());
 		readingRepository.save(reading);
 		
-//		return this.service.getWeather(country, city);
 		return resp;
 	}
 	
