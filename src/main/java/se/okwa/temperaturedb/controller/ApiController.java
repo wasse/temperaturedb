@@ -2,6 +2,7 @@ package se.okwa.temperaturedb.controller;
 
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -87,9 +88,9 @@ public class ApiController {
 		return readingRepository.findAllByCity(city);
 	}
 	
-	@GetMapping("/compare-yesterday/")
+	@GetMapping("/yesterday/")
 	@Transactional
-	public WeatherReading getComparison(@RequestParam("city") String city) {
+	public WeatherReading getYesterday(@RequestParam("city") String city) {
 		Mono<Weather> resp = this.service.getWeatherByCity(city);
 		WeatherReading reading = new WeatherReading(getValue(resp).getTemperature(), getValue(resp).getCity(), getValue(resp).getDate());
 		
@@ -97,9 +98,25 @@ public class ApiController {
 		return readingRepository.findByDate(today, city);
 	}
 	
-	@GetMapping("/now-and-week-ago/")
-	public WeatherReading getComparisonNow() {
-		return readingRepository.findNow();
+	@GetMapping("/week-ago/")
+	public WeatherReading getWeekBefore(@RequestParam("city") String city) {
+		return readingRepository.findNow(city);
+	}
+	
+	@GetMapping("/compareYesterday/")
+	public List<WeatherReading> getTheNewestAndYesterday(@RequestParam("city") String city) {
+		Mono<Weather> resp = this.service.getWeatherByCity(city);
+		WeatherReading reading = new WeatherReading(getValue(resp).getTemperature(), getValue(resp).getCity(), getValue(resp).getDate());
+		
+		Timestamp today = reading.getDate();
+		System.out.println(city);
+//		
+		WeatherReading yesterday = readingRepository.findByDate(today, city);
+		WeatherReading now = readingRepository.findTheNewest(city);
+		List<WeatherReading> list = new ArrayList<>();
+		list.add(now); list.add(yesterday);
+		
+		return list;
 	}
 	
 }

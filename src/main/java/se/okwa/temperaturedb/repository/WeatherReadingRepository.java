@@ -16,16 +16,25 @@ public interface WeatherReadingRepository extends JpaRepository<WeatherReading, 
 	List<WeatherReading> findAllByCity(String city);
 	
 	@Query(value="select * from weather_reading"
-			+ " where date >= :thisDay\\:\\:timestamp - '24 hour 30 minutes'\\:\\:interval"
+			+ " where date >= :thisDay\\:\\:timestamp - '24 hour 20 minutes'\\:\\:interval"
 			+ " and date < :thisDay\\:\\:timestamp - '24 hour 0 minutes'\\:\\:interval"
-			+ " and city = :city",
+			+ " and city = :city"
+			+ " limit 1",
 			nativeQuery=true)
 	WeatherReading findByDate(@Param("thisDay") Timestamp thisDay, @Param("city") String city);
 	
 	@Query(value="select * from weather_reading"
-			+ " where date >= now() - '7 days 0 hour 30 minutes'\\:\\:interval"
-			+ " and date < now() - '7 days 0 hour 0 minutes'\\:\\:interval",
-//			+ " and city = :city\\:\\:text",
+			+ " where date >= now() - '7 days 0 hour 20 minutes'\\:\\:interval"
+			+ " and date < now() - '7 days 0 hour 0 minutes'\\:\\:interval"
+			+ " and city = :city"
+			+ " limit 1",
 			nativeQuery=true)
-	WeatherReading findNow();
+	WeatherReading findNow(@Param("city") String city);
+	
+	@Query(value=" select * from weather_reading"
+			+ " where date >= now() - '20 minutes'\\:\\:interval"
+			+ " and city = :city"
+			+ " LIMIT 1",
+			nativeQuery=true)
+	WeatherReading findTheNewest(@Param("city") String city);
 }
